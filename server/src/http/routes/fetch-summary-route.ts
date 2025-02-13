@@ -14,9 +14,10 @@ export function fetchSummaryRoute(app: FastifyTypedInstance) {
     },
     async (request, reply) => {
       const userId = request.user.sub
+
       const fetchSummaryUseCase = new FetchSummaryUseCase()
 
-      const result = await fetchSummaryUseCase.execute(userId)
+      const result = await fetchSummaryUseCase.execute({ userId })
 
       return reply.status(200).send(result)
     }
