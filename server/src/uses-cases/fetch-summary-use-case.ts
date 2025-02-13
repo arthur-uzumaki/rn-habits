@@ -6,7 +6,7 @@ interface FetchSummaryUseCaseRequest {
 
 export class FetchSummaryUseCase {
   async execute({ userId }: FetchSummaryUseCaseRequest) {
-    const summary = await prisma.$queryRaw`
+    const summary = await prisma.$queryRaw /*sql*/`
       SELECT 
         D.id,
         D.date,
