@@ -1,0 +1,72 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id        String   @id @default(cuid())
+  name      String
+  email     String   @unique
+  googleId  String?  @unique
+  avatarUrl String   @map("avatar_url")
+  habits    Habit[]
+  createdAt DateTime @default(now()) @map("created_at")
+
+  @@map("users")
+}
+
+model Habit {
+  id        String          @id @default(cuid())
+  title     String
+  createdAt DateTime        @map("created_at")
+  user      User            @relation(fields: [userId], references: [id])
+  userId    String
+  dayHabits DayHabit[]
+  weekDays  HabitWeekDays[]
+
+  @@map("habits")
+}
+
+model HabitWeekDays {
+  id      String @id @default(cuid())
+  habitId String @map("habit_id")
+
+  habit Habit @relation(fields: [habitId], references: [id])
+
+  weekDay Int @map("week_day")
+
+  @@unique([habitId, weekDay])
+  @@map("habit_week_days")
+}
+
+model Day {
+  id        String     @id @default(cuid())
+  date      DateTime
+  dayHabits DayHabit[]
+
+  @@unique([date])
+  @@map("days")
+}
+
+model DayHabit {
+  id String @id @default(cuid())
+
+  dayId   String @map("day_id")
+  habitId String @map("habit_id")
+
+  day   Day   @relation(fields: [dayId], references: [id])
+  habit Habit @relation(fields: [habitId], references: [id])
+
+  @@unique([dayId, habitId])
+  @@map("day_habits")
+}
