@@ -58,20 +58,23 @@ export default function Habit() {
     }
   }, [])
 
-  const handleToggleHabits = useCallback(async (habitId: string) => {
-    try {
-      await api.patch(`/habits/${habitId}/toggle`)
+  const handleToggleHabits = useCallback(
+    async (habitId: string) => {
+      try {
+        await api.patch(`/habits/${habitId}/toggle`)
 
-      if (completedHabits?.includes(habitId)) {
-        setCompletedHabits(prevState =>
-          prevState.filter(habit => habit !== habitId)
-        )
-      } else setCompletedHabits(prevState => [...prevState, habitId])
-    } catch (error) {
-      console.log(error)
-      Alert.alert('Ops', 'Não foi possível atualizar o status do hábitos.')
-    }
-  }, [])
+        if (completedHabits?.includes(habitId)) {
+          setCompletedHabits(prevState =>
+            prevState.filter(habit => habit !== habitId)
+          )
+        } else setCompletedHabits(prevState => [...prevState, habitId])
+      } catch (error) {
+        console.log(error)
+        Alert.alert('Ops', 'Não foi possível atualizar o status do hábitos.')
+      }
+    },
+    [completedHabits]
+  )
 
   useEffect(() => {
     fetchHabits()

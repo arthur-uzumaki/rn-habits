@@ -21,7 +21,7 @@ interface UserProps {
 }
 
 export interface AuthContextProviderData {
-  user: UserProps | null
+  user: UserProps
   signin: () => Promise<void>
   logout: () => Promise<void>
   isUserLoading: boolean
@@ -34,7 +34,7 @@ interface AuthProvider {
 export const AuthContext = createContext({} as AuthContextProviderData)
 
 export function AuthContextProvider({ children }: AuthProvider) {
-  const [user, setUser] = useState<UserProps | null>(null)
+  const [user, setUser] = useState({} as UserProps)
   const [isUserLoading, setIsUserLoading] = useState(false)
 
   async function signin() {

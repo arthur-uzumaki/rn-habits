@@ -1,8 +1,5 @@
-import { useEffect } from 'react'
 import { View } from 'react-native'
 import { Tabs } from 'expo-router'
-
-import { schedulePushNotification } from '~/notifications/schedule-push-notification'
 
 import { FontAwesome } from '@expo/vector-icons'
 
