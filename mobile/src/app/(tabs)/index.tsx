@@ -6,6 +6,7 @@ import { Header } from '~/components/header'
 import { Loading } from '~/components/loading'
 
 import { Summary, type SummaryProps } from '~/components/summary'
+import { useAuth } from '~/hooks/auth-hook'
 import { api } from '~/lib/api'
 
 const weekDays = ['D', 'S', 'T', 'Q', 'Q', 'S', 'S']
@@ -13,6 +14,8 @@ const weekDays = ['D', 'S', 'T', 'Q', 'Q', 'S', 'S']
 export default function Home() {
   const [summary, setSummary] = useState<SummaryProps[]>([])
   const [isLoading, setIsLoading] = useState(true)
+
+  const { user } = useAuth()
 
   const fetchSummaryData = useCallback(async () => {
     try {
@@ -44,8 +47,10 @@ export default function Home() {
 
   useFocusEffect(
     useCallback(() => {
-      fetchSummaryData()
-    }, [fetchSummaryData])
+      if (summary.length === 0) {
+        fetchSummaryData()
+      }
+    }, [summary])
   )
 
   if (isLoading) {

@@ -1,6 +1,6 @@
 import * as Notifications from 'expo-notifications'
 
-export async function schedulePushNotification(userName: string) {
+export async function schedulePushNotification() {
   const schedule = await Notifications.getAllScheduledNotificationsAsync()
   console.log('Agendadas', schedule)
 
@@ -14,7 +14,7 @@ export async function schedulePushNotification(userName: string) {
 
   await Notifications.scheduleNotificationAsync({
     content: {
-      title: `Olá, ${userName} 😁`,
+      title: 'Lembrete Diário 🕒',
       body: 'Você praticou seus hábitos hoje?',
       color: '#09090a',
     },
