@@ -5,7 +5,6 @@ import '~/notifications/config-notification'
 import { useEffect } from 'react'
 import { Slot } from 'expo-router'
 import { StatusBar } from 'expo-status-bar'
-import * as SplashScreen from 'expo-splash-screen'
 
 import {
   Inter_400Regular,
@@ -15,16 +14,12 @@ import {
   useFonts,
 } from '@expo-google-fonts/inter'
 
-import * as Notifications from 'expo-notifications'
 import { schedulePushNotification } from '~/notifications/schedule-push-notification'
 import { permissionNotification } from '~/notifications/permission-notification'
 
 import { AuthContextProvider } from '~/contexts/auth-provider-context'
 
 import { Loading } from '~/components/loading'
-import AsyncStorage from '@react-native-async-storage/async-storage'
-
-SplashScreen.preventAutoHideAsync()
 
 export default function RootLayout() {
   const [fontsLoaded] = useFonts({
@@ -34,36 +29,12 @@ export default function RootLayout() {
     Inter_800ExtraBold,
   })
 
-  async function setupNotification() {
-    const hasPermission = await permissionNotification()
-    console.log('Permissão concedida:', hasPermission)
-
-    if (!hasPermission) return
-
-    const lastScheduled = await AsyncStorage.getItem('lastNotificationDate')
-    const today = new Date().toDateString()
-
-    console.log('Última notificação agendada:', lastScheduled)
-    console.log('Data de hoje:', today)
-
-    if (lastScheduled !== today) {
-      console.log('Agendando nova notificação...')
-      await schedulePushNotification()
-      await AsyncStorage.setItem('lastNotificationDate', today)
-      console.log('Notificação agendada com sucesso!')
-    } else {
-      console.log('Notificação já foi agendada hoje.')
-    }
-  }
-
   useEffect(() => {
-    setTimeout(() => {
-      SplashScreen.hideAsync()
-    }, 1000)
+    permissionNotification()
   }, [])
 
   useEffect(() => {
-    setupNotification()
+    schedulePushNotification()
   }, [])
 
   if (!fontsLoaded) {
