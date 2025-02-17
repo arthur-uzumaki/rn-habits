@@ -56,7 +56,10 @@ export default function New() {
         showsVerticalScrollIndicator={false}
         contentContainerClassName="pb-[100px]"
       >
-        <Button className="bg-transparent" onPress={() => router.back()}>
+        <Button
+          className="bg-transparent"
+          onPress={() => router.navigate('/(tabs)')}
+        >
           <Button.Icon icon="arrow-left" color={colors.zinc[400]} />
         </Button>
 

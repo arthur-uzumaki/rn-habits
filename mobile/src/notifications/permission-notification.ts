@@ -1,12 +1,16 @@
 import * as Notifications from 'expo-notifications'
 
 export async function permissionNotification() {
-  const { status } = await Notifications.getPermissionsAsync()
+  const { granted } = await Notifications.getPermissionsAsync()
 
-  if (status !== 'granted') {
-    const { status: newStatus } = await Notifications.requestPermissionsAsync()
-    return newStatus === 'granted'
+  if (!granted) {
+    await Notifications.requestPermissionsAsync()
   }
 
-  return true
+  if (granted) {
+    const pushToken = await Notifications.getExpoPushTokenAsync()
+
+    console.log('NOTIFICATION TOKEN =>', pushToken.data)
+    return pushToken.data
+  }
 }
