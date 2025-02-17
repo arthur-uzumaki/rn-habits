@@ -1,9 +1,12 @@
 import '~/styles/global.css'
 import '~/lib/dayjs'
+import '~/notifications/config-notification'
 
 import { useEffect } from 'react'
 import { Slot } from 'expo-router'
 import { StatusBar } from 'expo-status-bar'
+import * as SplashScreen from 'expo-splash-screen'
+
 import {
   Inter_400Regular,
   Inter_700Bold,
@@ -21,13 +24,7 @@ import { AuthContextProvider } from '~/contexts/auth-provider-context'
 import { Loading } from '~/components/loading'
 import AsyncStorage from '@react-native-async-storage/async-storage'
 
-Notifications.setNotificationHandler({
-  handleNotification: async () => ({
-    shouldShowAlert: true,
-    shouldPlaySound: true,
-    shouldSetBadge: true,
-  }),
-})
+SplashScreen.preventAutoHideAsync()
 
 export default function RootLayout() {
   const [fontsLoaded] = useFonts({
@@ -58,6 +55,12 @@ export default function RootLayout() {
       console.log('Notificação já foi agendada hoje.')
     }
   }
+
+  useEffect(() => {
+    setTimeout(() => {
+      SplashScreen.hideAsync()
+    }, 1000)
+  }, [])
 
   useEffect(() => {
     setupNotification()
