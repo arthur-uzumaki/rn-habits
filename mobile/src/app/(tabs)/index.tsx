@@ -47,10 +47,8 @@ export default function Home() {
 
   useFocusEffect(
     useCallback(() => {
-      if (summary.length === 0) {
-        fetchSummaryData()
-      }
-    }, [summary])
+      fetchSummaryData()
+    }, [])
   )
 
   if (isLoading) {

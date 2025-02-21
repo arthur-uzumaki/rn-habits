@@ -27,7 +27,7 @@ export default function TabsLayout() {
             borderTopWidth: 0,
             position: 'absolute',
             bottom: 50,
-            transform: [{ translateX: 155 }],
+            transform: [{ translateX: '120%' }],
             width: '30%',
             height: 70,
             borderRadius: 99,

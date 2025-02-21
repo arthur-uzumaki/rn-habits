@@ -9,7 +9,7 @@ export async function schedulePushNotification() {
     await Notifications.cancelAllScheduledNotificationsAsync()
   }
 
-  let triggerTime = dayjs().hour(20).minute(0).second(0)
+  let triggerTime = dayjs().hour(11).minute(38).second(0)
   console.log(triggerTime)
 
   if (triggerTime.isBefore(dayjs())) {
