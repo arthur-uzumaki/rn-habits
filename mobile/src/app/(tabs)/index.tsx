@@ -1,12 +1,11 @@
 import { router, useFocusEffect } from 'expo-router'
-import { useCallback, useMemo, useState } from 'react'
+import { useCallback, useState } from 'react'
 import { Alert, Text, View } from 'react-native'
 import { DAY_SIZE } from '~/components/habit-day'
 import { Header } from '~/components/header'
 import { Loading } from '~/components/loading'
 
 import { Summary, type SummaryProps } from '~/components/summary'
-import { useAuth } from '~/hooks/auth-hook'
 import { api } from '~/lib/api'
 
 const weekDays = ['D', 'S', 'T', 'Q', 'Q', 'S', 'S']
@@ -14,8 +13,6 @@ const weekDays = ['D', 'S', 'T', 'Q', 'Q', 'S', 'S']
 export default function Home() {
   const [summary, setSummary] = useState<SummaryProps[]>([])
   const [isLoading, setIsLoading] = useState(true)
-
-  const { user } = useAuth()
 
   const fetchSummaryData = useCallback(async () => {
     try {
@@ -34,8 +31,6 @@ export default function Home() {
     }
   }, [])
 
-  const memoizedSummary = useMemo(() => summary, [summary])
-
   function handleNavigateHabit(date: string) {
     router.push({
       pathname: '/habit/[date]',
@@ -48,7 +43,7 @@ export default function Home() {
   useFocusEffect(
     useCallback(() => {
       fetchSummaryData()
-    }, [])
+    }, [fetchSummaryData])
   )
 
   if (isLoading) {
@@ -74,7 +69,7 @@ export default function Home() {
         ))}
       </View>
 
-      <Summary data={memoizedSummary} onNavigate={handleNavigateHabit} />
+      <Summary data={summary} onNavigate={handleNavigateHabit} />
     </View>
   )
 }

@@ -34,7 +34,7 @@ export function HabitDay({
     <TouchableOpacity
       className={clsx('m-1 rounded-lg border-2', {
         'border-zinc-800 bg-zinc-900': amountAccomplishedPercentage === 0,
-        'border-violet-700 bg-violet-900':
+        'border-violet-900 bg-violet-900':
           amountAccomplishedPercentage > 0 && amountAccomplishedPercentage < 20,
         'border-violet-600 bg-violet-800':
           amountAccomplishedPercentage >= 20 &&
