@@ -39,10 +39,13 @@ export class FetchDayUseCase {
         dayHabits: true,
       },
     })
+    const completedHabits =
+      day?.dayHabits
+        .filter(dayHabit =>
+          possibleHabits.some(habit => habit.id === dayHabit.habitId)
+        )
+        .map(dayHabit => dayHabit.habitId) ?? []
 
-    const completedHabits = day?.dayHabits.map(dayHabit => {
-      return dayHabit.habitId ?? []
-    })
     return {
       possibleHabits,
       completedHabits,

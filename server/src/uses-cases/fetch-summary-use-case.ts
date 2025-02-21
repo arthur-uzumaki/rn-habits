@@ -3,7 +3,6 @@ import { prisma } from '@/lib/prisma'
 interface FetchSummaryUseCaseRequest {
   userId: string
 }
-
 export class FetchSummaryUseCase {
   async execute({ userId }: FetchSummaryUseCaseRequest) {
     const summary = await prisma.$queryRaw /*sql*/`
@@ -22,8 +21,11 @@ export class FetchSummaryUseCase {
       habits H ON H.id = HDW.habit_id AND H."userId" = ${userId}
     WHERE 
       H.id IS NOT NULL
+      AND (DH.habit_id IS NULL OR DH.habit_id IN (SELECT id FROM habits WHERE "userId" = ${userId}))
     GROUP BY 
       D.id, D.date
+    ORDER BY 
+      D.date DESC
   `
 
     return summary
